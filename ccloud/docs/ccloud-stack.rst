@@ -9,7 +9,7 @@ Overview
 
 This ``ccloud-stack`` utility creates a stack of fully managed services in |ccloud|.
 It is a quick way to create resources in |ccloud| with correct credentials and permissions, useful as a starting point from which you can then use for learning, extending, and building other examples.
-The utility uses the Confluent CLI under the hood to dynamically do the following in |ccloud| :
+The utility uses the Confluent CLI under the hood to dynamically do the following in |ccloud|:
 
 -  Create a new environment
 -  Create a new service account
@@ -59,10 +59,7 @@ By default, the |ccloud| ksqlDB app is not created with ``ccloud-stack``, you ha
    confluent ksql cluster create --cluster $CLUSTER --api-key "$KAFKA_API_KEY" --api-secret "$KAFKA_API_SECRET" --csu 1 -o json "$KSQLDB_NAME"
    confluent api-key create --service-account $SERVICE_ACCOUNT_ID --resource $RESOURCE -o json    // for ksqlDB REST API
 
-|ccloud| Promo Code
--------------------
 
-.. include:: includes/ccloud-examples-promo-code.rst
 
 
 =============
