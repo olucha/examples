@@ -11,15 +11,12 @@ x-network: &cap-add
 x-client-base: &client-base
   image: cnfldemos/ccloud-observability-client:0.2.0
   restart: always
-  ports:
-    - 1234
   volumes:
     - ./$CONFIG_FILE:/tmp/client.config
-    - ./monitoring_configs/jmx-exporter/jmx_prometheus_javaagent-0.12.0.jar:/usr/share/jmx-exporter/jmx_prometheus_javaagent-0.12.0.jar
-    - ./monitoring_configs/jmx-exporter/kafka_client.yml:/usr/share/jmx-exporter/kafka_client.yml
+    - ./monitoring_configs/OTLP/opentelemetry-javaagent.jar:/usr/share/OTLP/opentelemetry-javaagent.jar
     - ./:/tmp/java/
-  environment:
-    MAVEN_OPTS: -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-0.12.0.jar=1234:/usr/share/jmx-exporter/kafka_client.yml
+  links:
+    - opentelemetry-collector
 
 services:
   node-exporter:
@@ -35,12 +32,24 @@ services:
       - "--collector.filesystem.ignored-mount-points"
       - "^(aufs|proc|nsfs|shm|cgroup|tmpfs|binfmt_misc|debugfs|devpts|fusectl|hugetlbfs|fuse.lxcfs|mqueue|pstore|securityfs|sysfs|autofs|devtmpfs|configfs)"
 
+  opentelemetry-collector:
+    image: otel/opentelemetry-collector-contrib:0.93.0
+    container_name: opentelemetry-collector
+    ports:
+      - 4317:4317 # OTLP gRPC receiver
+      - 8889:8889 # Prometheus exported metrics
+    volumes:
+      - ./monitoring_configs/OTLP/config.yaml:/etc/otelcol-contrib/config.yaml
+    environment:
+      - METRICS_API_KEY=$METRICS_API_KEY
+      - METRICS_API_SECRET=$METRICS_API_SECRET
+      - CLOUD_CLUSTER=$CLOUD_CLUSTER
+
   prometheus:
     image: prom/prometheus:v2.34.0
     container_name: prometheus
     links:
-      - producer
-      - consumer
+      - opentelemetry-collector
     ports:
       - 9090:9090
     volumes:
@@ -64,6 +73,8 @@ services:
     command: >
       bash -c "mvn clean compile -f /tmp/java/
       &&  mvn -q -f /tmp/java/pom.xml exec:java -Dexec.mainClass=\"io.confluent.examples.clients.cloud.ProducerExample\" -Dexec.args=\"/tmp/client.config demo-topic-1\""
+    environment:
+      MAVEN_OPTS: -javaagent:/usr/share/OTLP/opentelemetry-javaagent.jar -Dotel.service.name=producer -Dotel.traces.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.metrics.protocol=grpc -Dotel.exporter.otlp.metrics.endpoint=http://opentelemetry-collector:4317
 
   consumer:
     <<: [*client-base, *client-base]
@@ -71,6 +82,8 @@ services:
       bash -c "sleep 15 &&
       mvn compile -f /tmp/java/
       &&  mvn -q -f /tmp/java/pom.xml exec:java -Dexec.mainClass=\"io.confluent.examples.clients.cloud.ConsumerExample\" -Dexec.args=\"/tmp/client.config demo-topic-1\""
+    environment:
+      MAVEN_OPTS: -javaagent:/usr/share/OTLP/opentelemetry-javaagent.jar -Dotel.service.name=consumer -Dotel.traces.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.metrics.protocol=grpc -Dotel.exporter.otlp.metrics.endpoint=http://opentelemetry-collector:4317
 
   kafka-lag-exporter:
     image: lightbend/kafka-lag-exporter:0.5.5

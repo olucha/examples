@@ -1,0 +1,36 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+  prometheus:
+    config:
+      scrape_configs:
+      - job_name: confluent-cloud
+        scheme: https
+        static_configs:
+        - targets: ['api.telemetry.confluent.cloud']
+          labels:
+            env: "dev"
+        basic_auth:
+          username: "${env:METRICS_API_KEY}"
+          password: "${env:METRICS_API_SECRET}"
+        metrics_path: /v2/metrics/cloud/export
+        params:
+          "resource.kafka.id": "${env:CLOUD_CLUSTER}"
+          "resource.connector.id": []
+          "resource.ksql.id": []
+          "resource.schema_registry.id": []
+
+processors:
+  batch:
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [batch]
+      exporters: [prometheus]
