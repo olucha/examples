@@ -21,14 +21,16 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 8,
-  "iteration": 1644350829423,
+  "id": 3,
+  "iteration": 1706782919261,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "uid": "$datasource"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -41,7 +43,9 @@
       "type": "row"
     },
     {
-      "datasource": "$datasource",
+      "datasource": {
+        "uid": "$datasource"
+      },
       "description": "Per-second average rate of ingress of data to topics, basic cluster has a max of 100MBps.",
       "fieldConfig": {
         "defaults": {
@@ -97,7 +101,9 @@
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "exemplar": true,
           "expr": "sum(sum_over_time(confluent_kafka_server_received_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval])/count_over_time(confluent_kafka_server_received_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval]))",
           "interval": "",
@@ -109,7 +115,9 @@
       "type": "stat"
     },
     {
-      "datasource": "$datasource",
+      "datasource": {
+        "uid": "$datasource"
+      },
       "description": "Per-second average rate of egress data to topics, basic cluster has a max of 100MBps.",
       "fieldConfig": {
         "defaults": {
@@ -165,7 +173,9 @@
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "exemplar": true,
           "expr": "sum(sum_over_time(confluent_kafka_server_sent_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval])/count_over_time(confluent_kafka_server_sent_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval]))",
           "interval": "",
@@ -177,7 +187,9 @@
       "type": "stat"
     },
     {
-      "datasource": "$datasource",
+      "datasource": {
+        "uid": "$datasource"
+      },
       "description": "Per-second average rate of requests, basic cluster maxes out at 1500 requests per second.",
       "fieldConfig": {
         "defaults": {
@@ -233,7 +245,9 @@
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "exemplar": true,
           "expr": "sum(sum_over_time(confluent_kafka_server_request_count{job=~\"$job\",kafka_id=~\"$cluster\",principal=~\"$principal_id\"}[$__rate_interval])/count_over_time(confluent_kafka_server_request_count{job=~\"$job\",kafka_id=~\"$cluster\",principal=~\"$principal_id\"}[$__rate_interval]))",
           "interval": "",
@@ -245,82 +259,9 @@
       "type": "stat"
     },
     {
-      "datasource": "$datasource",
-      "description": "The percentage of records being written vs messages being read from the cluster.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              },
-              {
-                "color": "orange",
-                "value": 85
-              },
-              {
-                "color": "yellow",
-                "value": 90
-              },
-              {
-                "color": "green",
-                "value": 95
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
+      "datasource": {
+        "uid": "$datasource"
       },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 9,
-        "y": 1
-      },
-      "id": 23,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.4.4",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "avg((sum_over_time(confluent_kafka_server_received_records{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval])/count_over_time(confluent_kafka_server_received_records{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval]))/(sum_over_time(confluent_kafka_server_sent_records{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval])/count_over_time(confluent_kafka_server_sent_records{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"}[$__rate_interval])))",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Write/Read Records Percentage",
-      "type": "stat"
-    },
-    {
-      "datasource": "$datasource",
       "description": "Basic clusters have a max retained bytes limit of 5 TB prior to replication. confluent_kafka_server_retained_bytes is after replication thus needs to be divided by 3.",
       "fieldConfig": {
         "defaults": {
@@ -354,7 +295,7 @@
       "gridPos": {
         "h": 5,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 1
       },
       "id": 12,
@@ -376,7 +317,9 @@
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "exemplar": true,
           "expr": "sum(confluent_kafka_server_retained_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"})/3",
           "interval": "",
@@ -388,7 +331,9 @@
       "type": "stat"
     },
     {
-      "datasource": "$datasource",
+      "datasource": {
+        "uid": "$datasource"
+      },
       "description": "The sum of partitions in a cluster. Basic cluster max partitions limit is 2048.",
       "fieldConfig": {
         "defaults": {
@@ -422,7 +367,7 @@
       "gridPos": {
         "h": 5,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 1
       },
       "id": 19,
@@ -444,7 +389,9 @@
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "exemplar": true,
           "expr": "sum(confluent_kafka_server_partition_count{job=~\"$job\",kafka_id=~\"$cluster\"})",
           "hide": false,
@@ -458,77 +405,9 @@
       "type": "stat"
     },
     {
-      "datasource": "$datasource",
-      "description": "Basic clusters have a limit on the number of partitions that can be created and deleted in a 5 minute period. This single stat provides the absolute difference between the number of partitions are the beginning and end of the 5 minute period. This over simplifies the problem, so more conservative thresholds are put in place.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "max": 250,
-          "min": 0,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 50
-              },
-              {
-                "color": "red",
-                "value": 60
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
+      "datasource": {
+        "uid": "$datasource"
       },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 18,
-        "y": 1
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.4.4",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "sum(abs(idelta(confluent_kafka_server_partition_count{job=~\"$job\",kafka_id=~\"$cluster\"}[$__rate_interval])))",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Partition count change (delta)",
-      "type": "stat"
-    },
-    {
-      "datasource": "$datasource",
       "description": "The number of active connections to a cluster. Basic clusters limit active connections to 1000.",
       "fieldConfig": {
         "defaults": {
@@ -563,7 +442,7 @@
       "gridPos": {
         "h": 5,
         "w": 3,
-        "x": 21,
+        "x": 15,
         "y": 1
       },
       "id": 22,
@@ -585,7 +464,9 @@
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "uid": "$datasource"
+          },
           "exemplar": true,
           "expr": "sum(confluent_kafka_server_active_connection_count{job=~\"$job\",kafka_id=~\"$cluster\",principal=~\"$principal_id\"})",
           "hide": false,
@@ -598,56 +479,11 @@
       "type": "stat"
     },
     {
-      "collapsed": false,
-      "datasource": "$datasource",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 6
-      },
-      "id": 16,
-      "panels": [],
-      "title": "Topics",
-      "type": "row"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "The current count of bytes retained by the cluster, summed across all partitions. The count is sampled every 60 seconds.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -661,1107 +497,51 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 7
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "sum by (kafka_id, topic) (confluent_kafka_server_retained_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{kafka_id}} - {{topic}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Topic retained bytes",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "The delta count of bytes received from the network. Each sample is the number of bytes received since the previous data sample. The count is sampled every 60 seconds.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 16
-      },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum by (topic, kafka_id) (confluent_kafka_server_received_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{topic}} - {{kafka_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Topic received bytes",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "The delta count of bytes sent over the network. Each sample is the number of bytes sent since the previous data point. The count is sampled every 60 seconds.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 12,
-        "y": 16
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "sum by (topic, kafka_id) (confluent_kafka_server_sent_bytes{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{topic}} - {{kafka_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Topic Sent bytes",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "The delta count of records received. Each sample is the number of records received since the previous data sample. The count is sampled every 60 seconds.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
+          }
         },
         "overrides": []
       },
       "gridPos": {
         "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 22
+        "w": 3,
+        "x": 18,
+        "y": 1
       },
-      "id": 31,
+      "id": 26,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum by (topic, kafka_id) (confluent_kafka_server_received_records{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{topic}} - {{kafka_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Topic received record",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "The delta count of records sent. Each sample is the number of records sent since the previous data point. The count is sampled every 60 seconds.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 22
-      },
-      "id": 30,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "sum by (topic, kafka_id) (confluent_kafka_server_sent_records{job=~\"$job\",kafka_id=~\"$cluster\",topic=~\"$topic\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{topic}} - {{kafka_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Topic sent records",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "The delta count of requests received over the network. Each sample is the number of requests received since the previous data point. The count sampled every 60 seconds.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 27
-      },
-      "id": 29,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "sum by (kafka_id, type) (confluent_kafka_server_request_count{job=~\"$job\",kafka_id=~\"$cluster\",principal=~\"$principal_id\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{kafka_id}}-{{type}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Request rate",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "datasource": "$datasource",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 36
-      },
-      "id": 33,
-      "panels": [],
-      "title": "Connectors",
-      "type": "row"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 37
-      },
-      "id": 39,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
-          "show": false
+          "fields": "",
+          "values": false
         },
-        "showHeader": true
+        "textMode": "auto"
       },
       "pluginVersion": "8.4.4",
       "targets": [
         {
-          "datasource": "$datasource",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
-          "expr": "confluent_kafka_connect_dead_letter_queue_records{job=~\"$job\",connector_id=~\"$connector_id\"}",
-          "format": "time_series",
-          "instant": false,
+          "expr": "sum(confluent_kafka_server_successful_authentication_count{job=~\"$job\",kafka_id=~\"$cluster\",principal=~\"$principal_id\"})",
           "interval": "",
-          "legendFormat": "{{connector_id}}",
+          "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Dead letter queue records Count",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "lastNotNull"
-            ]
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "Field": "Connector",
-              "Last *": "Count",
-              "Value #A": "Records",
-              "connector_id": "Connector"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 46
-      },
-      "id": 36,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "confluent_kafka_connect_received_records{job=~\"$job\",connector_id=~\"$connector_id\"}",
-          "interval": "",
-          "legendFormat": "{{connector_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Received records",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 46
-      },
-      "id": 38,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "confluent_kafka_connect_received_bytes{job=~\"$job\",connector_id=~\"$connector_id\"}",
-          "interval": "",
-          "legendFormat": "{{connector_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Received bytes",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 54
-      },
-      "id": 35,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "confluent_kafka_connect_sent_records{job=~\"$job\",connector_id=~\"$connector_id\"}",
-          "interval": "",
-          "legendFormat": "{{connector_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Sent records",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 54
-      },
-      "id": 37,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "confluent_kafka_connect_sent_bytes{job=~\"$job\",connector_id=~\"$connector_id\"}",
-          "interval": "",
-          "legendFormat": "{{connector_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Sent bytes",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "datasource": "$datasource",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 62
-      },
-      "id": 42,
-      "panels": [],
-      "title": "ksqlDB",
-      "type": "row"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 63
-      },
-      "id": 44,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "8.4.4",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "confluent_kafka_ksql_streaming_unit_count{job=~\"$job\",ksql_id=~\"$ksql_id\"}",
-          "interval": "",
-          "legendFormat": "{{ksql_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Streaming Unit Count",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "reducers": [
-              "lastNotNull"
-            ]
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Field": "Ksql",
-              "Last *": "Count"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "datasource": "$datasource",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 72
-      },
-      "id": 25,
-      "panels": [],
-      "title": "Schema Registry",
-      "type": "row"
-    },
-    {
-      "datasource": "$datasource",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 73
-      },
-      "id": 45,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "8.4.4",
-      "targets": [
-        {
-          "datasource": "$datasource",
-          "exemplar": true,
-          "expr": "confluent_kafka_schema_registry_schema_count{job=~\"$job\",schema_registry_id=~\"$schema_registry_id\"}",
-          "interval": "",
-          "legendFormat": "{{schema_registry_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Schema Count",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "reducers": [
-              "lastNotNull"
-            ]
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Field": "Schema Registry",
-              "Last *": "Count"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      "title": "Successful authentications",
+      "type": "stat"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 32,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [
     "confluent-cloud-integration"
@@ -1798,7 +578,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_server_retained_bytes, job)",
         "hide": 0,
         "includeAll": true,
@@ -1827,7 +610,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_server_retained_bytes{job=~\"$job\"}, kafka_id)",
         "hide": 0,
         "includeAll": true,
@@ -1859,7 +645,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_server_retained_bytes{job=~\"$job\",kafka_id=~\"$cluster\"}, topic)",
         "hide": 0,
         "includeAll": true,
@@ -1891,7 +680,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_server_request_count{job=~\"$job\", kafka_id=~\"$cluster\"},principal_id)",
         "hide": 0,
         "includeAll": true,
@@ -1920,7 +712,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_connect_dead_letter_queue_records{job=~\"$job\"}, connector_id)",
         "hide": 0,
         "includeAll": true,
@@ -1949,7 +744,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_ksql_streaming_unit_count{job=~\"$job\"}, ksql_id)",
         "hide": 0,
         "includeAll": true,
@@ -1978,7 +776,10 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
         "definition": "label_values(confluent_kafka_schema_registry_schema_count{job=~\"$job\"}, schema_registry_id)",
         "hide": 0,
         "includeAll": true,
@@ -2019,6 +820,6 @@
   "timezone": "",
   "title": "Confluent Cloud",
   "uid": "5CSjVXbnk",
-  "version": 7,
+  "version": 3,
   "weekStart": ""
 }
