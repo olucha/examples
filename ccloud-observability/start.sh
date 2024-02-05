@@ -86,6 +86,8 @@ echo "CLOUD_KSQLDB_APPS=$CLOUD_KSQLDB_APPS" >> .env
 echo "CLOUD_SCHEMA_REGISTRY=$CLOUD_SCHEMA_REGISTRY" >> .env
 echo "CLUSTER_REST_ENDPOINT=$CLUSTER_REST_ENDPOINT" >> .env
 echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+echo "CLOUD_KEY=$CLOUD_KEY" >> .env
+echo "CLOUD_SECRET=$CLOUD_SECRET" >> .env
 
 # Create custom prometheus.yml from prometheus.template.yml.
 # The resulting prometheus.yml will necessarily contain secrets, and is .gitignore-d .
@@ -108,6 +110,10 @@ docker run -i --rm --env-file .env mikefarah/yq '
   with(.modules.[].http_client_config; . |
     .basic_auth.username = env(METRICS_API_KEY) |
     .basic_auth.password = env(METRICS_API_SECRET)
+  ) |
+  with(.modules["acls"].http_client_config; . |
+    .basic_auth.username = env(CLOUD_KEY) |
+    .basic_auth.password = env(CLOUD_SECRET)
   )
 ' < monitoring_configs/json-exporter/config.template.yml > monitoring_configs/json-exporter/config.yml
 
