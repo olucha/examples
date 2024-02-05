@@ -45,11 +45,21 @@ services:
       - METRICS_API_SECRET=$METRICS_API_SECRET
       - CLOUD_CLUSTER=$CLOUD_CLUSTER
 
+  json_exporter:
+    image: quay.io/prometheuscommunity/json-exporter:v0.6.0
+    container_name: json-exporter
+    entrypoint: "/bin/json_exporter --config.file=/tmp/config.yml"
+    ports:
+      - 7979:7979
+    volumes:
+      - ./monitoring_configs/json-exporter/config.yml:/tmp/config.yml
+
   prometheus:
     image: prom/prometheus:v2.34.0
     container_name: prometheus
     links:
       - opentelemetry-collector
+      - json_exporter
     ports:
       - 9090:9090
     volumes:

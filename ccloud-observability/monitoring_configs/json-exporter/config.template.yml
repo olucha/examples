@@ -1,0 +1,13 @@
+---
+modules:
+  api-keys:
+    metrics:
+    - name: api_keys_used
+      path: '{ .usage }'
+      help: Number of API Keys used at cluster
+      labels:
+        environment: dev
+    http_client_config:
+      basic_auth:
+        username: ""
+        password: ""

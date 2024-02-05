@@ -68,6 +68,8 @@ export LAG_EXPORTER_ID=$CLUSTER
 export CLOUD_CONNECTORS=$(confluent connect cluster list -o json | jq -c '. | map(.id)')
 export CLOUD_KSQLDB_APPS=$(confluent ksql cluster list -o json |  jq -c '. | map(.id)')
 export CLOUD_SCHEMA_REGISTRY=$(confluent schema-registry cluster describe -o json |  jq -c '[.cluster_id]')
+export CLUSTER_REST_ENDPOINT=$(confluent kafka cluster describe -o json |  jq -r '.rest_endpoint')
+export ENVIRONMENT=$(confluent environment list -o json|jq -r '.[] | select(.is_current==true) | .id')
 
 rm .env 2>/dev/null
 
@@ -82,6 +84,27 @@ echo "SASL_JAAS_CONFIG=$SASL_JAAS_CONFIG" >> .env
 echo "CLOUD_CONNECTORS=$CLOUD_CONNECTORS" >> .env
 echo "CLOUD_KSQLDB_APPS=$CLOUD_KSQLDB_APPS" >> .env
 echo "CLOUD_SCHEMA_REGISTRY=$CLOUD_SCHEMA_REGISTRY" >> .env
+echo "CLUSTER_REST_ENDPOINT=$CLUSTER_REST_ENDPOINT" >> .env
+echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+
+# Create custom prometheus.yml from prometheus.template.yml.
+# The resulting prometheus.yml will necessarily contain secrets, and is .gitignore-d .
+# Prometheus does not support env/variables in config yaml, https://github.com/prometheus/prometheus/issues/2357
+# Use yq instead to create from template
+docker run -i --rm --env-file .env mikefarah/yq '
+  (.scrape_configs[] | select(.job_name == "api-keys") | .static_configs.[0].targets) += ("https://api.confluent.cloud/service-quota/v1/applied-quotas/kafka.max_api_keys.per_cluster?scope=kafka_cluster&environment=${ENVIRONMENT}&kafka_cluster=${LAG_EXPORTER_ID}" | envsubst)
+' < monitoring_configs/prometheus/prometheus.template.yml > monitoring_configs/prometheus/prometheus.yml
+
+# Create custom config.yml from config.template.yml.
+# The resulting config.yml will necessarily contain secrets, and is .gitignore-d .
+# JSON Exporter does not support env/variables in config yaml
+# Use yq instead to create from template
+docker run -i --rm --env-file .env mikefarah/yq '
+  with(.modules.api-keys.http_client_config; . |
+    .basic_auth.username = env(METRICS_API_KEY) |
+    .basic_auth.password = env(METRICS_API_SECRET)
+  )
+' < monitoring_configs/json-exporter/config.template.yml > monitoring_configs/json-exporter/config.yml
 
 echo -e "\n====== Starting up Prometheus, Grafana, exporters, and clients"
 echo "docker compose up -d"

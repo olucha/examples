@@ -1,1 +1,2 @@
 monitoring_configs/prometheus/prometheus.yml
+monitoring_configs/json-exporter/config.yml
