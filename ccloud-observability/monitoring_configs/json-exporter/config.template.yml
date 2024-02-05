@@ -11,3 +11,25 @@ modules:
       basic_auth:
         username: ""
         password: ""
+  connect-tasks:
+    metrics:
+    - name: connect_tasks_used
+      path: '{ [.[].status.tasks[]].length() }'
+      help: Number of Connect Tasks used
+      labels:
+        environment: dev
+    http_client_config:
+      basic_auth:
+        username: ""
+        password: ""
+  acls:
+    metrics:
+    - name: acls_used
+      path: '{ .data.length() }'
+      help: Number of ACLs used
+      labels:
+        environment: dev
+    http_client_config:
+      basic_auth:
+        username: ""
+        password: ""

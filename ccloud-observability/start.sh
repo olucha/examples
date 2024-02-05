@@ -92,7 +92,12 @@ echo "ENVIRONMENT=$ENVIRONMENT" >> .env
 # Prometheus does not support env/variables in config yaml, https://github.com/prometheus/prometheus/issues/2357
 # Use yq instead to create from template
 docker run -i --rm --env-file .env mikefarah/yq '
-  (.scrape_configs[] | select(.job_name == "api-keys") | .static_configs.[0].targets) += ("https://api.confluent.cloud/service-quota/v1/applied-quotas/kafka.max_api_keys.per_cluster?scope=kafka_cluster&environment=${ENVIRONMENT}&kafka_cluster=${LAG_EXPORTER_ID}" | envsubst)
+  (.scrape_configs[] | select(.job_name == "api-keys") | .static_configs.[0].targets) += 
+    ("https://api.confluent.cloud/service-quota/v1/applied-quotas/kafka.max_api_keys.per_cluster?scope=kafka_cluster&environment=${ENVIRONMENT}&kafka_cluster=${LAG_EXPORTER_ID}" | envsubst) |
+  (.scrape_configs[] | select(.job_name == "connect-tasks") | .static_configs.[0].targets) += 
+    ("https://api.confluent.cloud/connect/v1/environments/${ENVIRONMENT}/clusters/${LAG_EXPORTER_ID}/connectors?expand=status" | envsubst) |
+  (.scrape_configs[] | select(.job_name == "acls") | .static_configs.[0].targets) += 
+    ("${CLUSTER_REST_ENDPOINT}/kafka/v3/clusters/${LAG_EXPORTER_ID}/acls?resource_type=ANY&pattern_type=ANY&operation=ANY&permission=ANY" | envsubst)
 ' < monitoring_configs/prometheus/prometheus.template.yml > monitoring_configs/prometheus/prometheus.yml
 
 # Create custom config.yml from config.template.yml.
@@ -100,7 +105,7 @@ docker run -i --rm --env-file .env mikefarah/yq '
 # JSON Exporter does not support env/variables in config yaml
 # Use yq instead to create from template
 docker run -i --rm --env-file .env mikefarah/yq '
-  with(.modules.api-keys.http_client_config; . |
+  with(.modules.[].http_client_config; . |
     .basic_auth.username = env(METRICS_API_KEY) |
     .basic_auth.password = env(METRICS_API_SECRET)
   )
