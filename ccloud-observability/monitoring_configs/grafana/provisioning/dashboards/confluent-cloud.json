@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
-  "iteration": 1706782919261,
+  "id": 1,
+  "iteration": 1707312139288,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -538,6 +538,68 @@
       ],
       "title": "Successful authentications",
       "type": "stat"
+    },
+    {
+      "description": "API keys in use at cluster (max 100 for Standard cluster)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 21,
+        "y": 1
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "api_keys_used{env=\"dev\",instance=\"json-exporter:7979\",job=\"api-keys\"}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "API Keys used",
+      "type": "stat"
     }
   ],
   "refresh": "30s",
@@ -693,102 +755,6 @@
         "options": [],
         "query": {
           "query": "label_values(confluent_kafka_server_request_count{job=~\"$job\", kafka_id=~\"$cluster\"},principal_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "definition": "label_values(confluent_kafka_connect_dead_letter_queue_records{job=~\"$job\"}, connector_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Connector",
-        "multi": true,
-        "name": "connector_id",
-        "options": [],
-        "query": {
-          "query": "label_values(confluent_kafka_connect_dead_letter_queue_records{job=~\"$job\"}, connector_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "definition": "label_values(confluent_kafka_ksql_streaming_unit_count{job=~\"$job\"}, ksql_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Ksql",
-        "multi": true,
-        "name": "ksql_id",
-        "options": [],
-        "query": {
-          "query": "label_values(confluent_kafka_ksql_streaming_unit_count{job=~\"$job\"}, ksql_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "definition": "label_values(confluent_kafka_schema_registry_schema_count{job=~\"$job\"}, schema_registry_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Schema Registry",
-        "multi": true,
-        "name": "schema_registry_id",
-        "options": [],
-        "query": {
-          "query": "label_values(confluent_kafka_schema_registry_schema_count{job=~\"$job\"}, schema_registry_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
